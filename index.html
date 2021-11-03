@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
 
@@ -23,11 +26,11 @@
     <hr>
 
     <!-- C8task. Creates a form with the submit button that updates the login time for Steve Jobs -->
-    
+
     <h2>C8 task. Get all non-archived messages from all users containg the name “Franklin”</h2>
     <!-- Creates a form with the submit button that gets all messages from Franklins -->
     <form id="get-messages-from-franklins-form">
-    <input type="submit" value="Get Messages From Franklins">
+        <input type="submit" value="Get Messages From Franklins">
     </form>
     <!-- Creates a div element where messages from Franklins will be shown -->
     <div id="get-messages-from-franklins-div-shown"></div>
@@ -35,7 +38,7 @@
     <hr>
 
     <!-- C9task. Creates a form with the submit button that updates the login time for Steve Jobs -->
-    
+
     <h2>C9 task. Updates the login time for Steve Jobs</h2>
     <form id="update-steve-jobs-form">
         <input type="submit" value="Update Steve Jobs's login time">
@@ -54,7 +57,7 @@
     <div id="show-messages-deleted"></div>
 
     <hr>
-    
+
     <!-- C11 task. Creates a delete button to delete messages older than 30 days -->
     <h2>C11 task. Archives all messages by Steve Jobs</h2>
     <form id="archive-steve-jobs-form">
@@ -96,7 +99,7 @@
         <label for="userid">User id:</label>
         <input type="text" id="userid" name="userid"><br>
         <label for="message-to-post">Message:</label>
-        <input type="text" id ="message-to-post" name="message-to-post"><br>
+        <input type="text" id="message-to-post" name="message-to-post"><br>
         <input type="submit" value="Post a message">
     </form>
     <div id="show added message"></div>
@@ -106,47 +109,54 @@
         buttongetAllMessages.addEventListener('submit', event => {
             event.preventDefault();
             fetch('/api/messages')
-                .then((res)=>res.json())
-                .then(res=> {
+                .then((res) => res.json())
+                .then(res => {
                     console.log(res);
                     const container = document.querySelector('.messages-div-shown');
                     const heading = document.createElement("h1");
                     heading.textContent = "All Messages";
                     container.appendChild(heading);
-                    const ol=document.createElement('ol');
+                    const ol = document.createElement('ol');
                     container.appendChild(ol);
                     res.forEach(item => {
                         const li = document.createElement('li');
-                        const { message } = item;
+                        const {
+                            message
+                        } = item;
                         li.appendChild(document.createTextNode(message));
                         ol.appendChild(li);
+                    });
                 });
-            });
         });
 
         const buttonSortUsers = document.getElementById('get-sorted-users-form');
         buttonSortUsers.addEventListener('submit', event => {
             event.preventDefault();
             fetch('/api/sort-users')
-                .then((res)=>res.json())
-                .then(res=> {
+                .then((res) => res.json())
+                .then(res => {
                     const container = document.getElementById('sorted-users-div-shown');
 
                     const heading = document.createElement("h1");
                     heading.textContent = "Sorted Users";
                     container.appendChild(heading);
-                    const ol=document.createElement('ol');
+                    const ol = document.createElement('ol');
                     container.appendChild(ol);
 
                     res.forEach(user => {
                         const li = document.createElement('li');
-                        const {friendlyname, emailaddress, admin, lastlogin} = user;
+                        const {
+                            friendlyname,
+                            emailaddress,
+                            admin,
+                            lastlogin
+                        } = user;
                         const isAdmin = admin ? 'Admin' : "Non Admin";
-                        li.appendChild(document.createTextNode(friendlyname+', '+emailaddress+', '+isAdmin+', '+lastlogin));
+                        li.appendChild(document.createTextNode(friendlyname + ', ' + emailaddress + ', ' + isAdmin + ', ' + lastlogin));
                         ol.appendChild(li);
                     });
                 });
-            });
+        });
 
 
         const formAddUser = document.getElementById('add-user-form');
@@ -155,15 +165,21 @@
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             event.preventDefault();
-            let body = JSON.stringify({ username, email, password });
+            let body = JSON.stringify({
+                username,
+                email,
+                password
+            });
             fetch("/api/create-user", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body,
-                credentials: 'same-origin'
-            }).then(res => res.json())
-            .then(res => console.log("here is res", res))
-            .catch((err) => console.log("error goes here",err));
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body,
+                    credentials: 'same-origin'
+                }).then(res => res.json())
+                .then(res => console.log("here is res", res))
+                .catch((err) => console.log("error goes here", err));
         });
 
 
@@ -171,82 +187,94 @@
         buttonGetMessagesFranklins.addEventListener('submit', event => {
             event.preventDefault();
             fetch('/api/get-messages-from-franklins')
-                .then((res)=>res.json())
-                .then(res=> {
+                .then((res) => res.json())
+                .then(res => {
                     const container = document.getElementById('get-messages-from-franklins-div-shown');
                     console.log(res);
                     const heading = document.createElement("h1");
                     heading.textContent = "Messages from Franklins";
                     container.appendChild(heading);
-                    const ol=document.createElement('ol');
+                    const ol = document.createElement('ol');
                     container.appendChild(ol);
 
-                    res.forEach( data => {
+                    res.forEach(data => {
                         // console.log(message);
                         const li = document.createElement('li');
-                        const { message } = data;
+                        const {
+                            message
+                        } = data;
                         li.appendChild(document.createTextNode(message));
                         ol.appendChild(li);
                     });
                 });
-            });
-
-    const updateSteve = document.getElementById('update-steve-jobs-form');
-    updateSteve.addEventListener('submit', event => {
-        event.preventDefault();
-        let body = JSON.stringify({ });
-            fetch("/api/update-steve", {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body,
-                credentials: 'same-origin'
-            }).then(res => res.json())
-            .then(res => document.getElementById('show-steve-updated').innerText=JSON.stringify(res.ok))
-            .catch((err) => console.log("error goes here", err));
         });
 
-    const deleteOldMsButton = document.getElementById('delete-messages-older-30-form');
-    deleteOldMsButton.addEventListener('submit', event => {
-        event.preventDefault();
-        let body = JSON.stringify({ });
-        fetch(`/api/delete-messages`,{
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'same-origin'
-        }).then((res)=>res.json())
-        .then(res=>document.getElementById('show-messages-deleted').innerText=JSON.stringify(res.ok))
-    });
+        const updateSteve = document.getElementById('update-steve-jobs-form');
+        updateSteve.addEventListener('submit', event => {
+            event.preventDefault();
+            let body = JSON.stringify({});
+            fetch("/api/update-steve", {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body,
+                    credentials: 'same-origin'
+                }).then(res => res.json())
+                .then(res => document.getElementById('show-steve-updated').innerText = JSON.stringify(res.ok))
+                .catch((err) => console.log("error goes here", err));
+        });
 
-    const archiveSteve = document.getElementById('archive-steve-jobs-form');
-    archiveSteve.addEventListener('submit', event => {
-        event.preventDefault();
+        const deleteOldMsButton = document.getElementById('delete-messages-older-30-form');
+        deleteOldMsButton.addEventListener('submit', event => {
+            event.preventDefault();
+            let body = JSON.stringify({});
+            fetch(`/api/delete-messages`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                }).then((res) => res.json())
+                .then(res => document.getElementById('show-messages-deleted').innerText = JSON.stringify(res.ok))
+        });
+
+        const archiveSteve = document.getElementById('archive-steve-jobs-form');
+        archiveSteve.addEventListener('submit', event => {
+            event.preventDefault();
             fetch("/api/archive-steve", {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'same-origin'
-            }).then(res => res.json())
-            .then(res => document.getElementById('show-messages-archived').innerText=JSON.stringify(res.ok))
-            .catch((err) => console.log("error goes here", err));
-    });
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    credentials: 'same-origin'
+                }).then(res => res.json())
+                .then(res => document.getElementById('show-messages-archived').innerText = JSON.stringify(res.ok))
+                .catch((err) => console.log("error goes here", err));
+        });
 
-    const formPostMessage = document.getElementById('post-message-form');
-    formPostMessage.addEventListener('submit', event => {
+        const formPostMessage = document.getElementById('post-message-form');
+        formPostMessage.addEventListener('submit', event => {
             const userid = document.getElementById('userid').value;
             const message = document.getElementById('message-to-post').value;
             event.preventDefault();
-            let body = JSON.stringify({ message, userid });
+            let body = JSON.stringify({
+                message,
+                userid
+            });
             fetch("/api/post-message", {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body,
-                credentials: 'same-origin'
-            }).then(res => res.json())
-            .then(res => console.log("here is res", res))
-            .catch((err) => console.log("error goes here",err));
-    }); 
-
-
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body,
+                    credentials: 'same-origin'
+                }).then(res => res.json())
+                .then(res => console.log("here is res", res))
+                .catch((err) => console.log("error goes here", err));
+        });
     </script>
 
 </body>
+
 </html>
