@@ -13,9 +13,9 @@ CREATE TABLE IF NOT EXISTS user(
     userid INTEGER PRIMARY KEY NOT NULL,
     friendlyname VARCHAR(50),
     emailaddress VARCHAR(320) UNIQUE NOT NULL,
-    passwords VARCHAR(256),
+    passwords VARCHAR(256) DEFAULT --blank--,
     admins INTEGER(1) DEFAULT 0 NOT NULL,
-    lastlogin INTEGER(1) DEFAULT (datetime(strftime('%s', 'now'), 'unixepoch'))
+    lastlogin INTEGER(1) DEFAULT (0)
     );
 
 `

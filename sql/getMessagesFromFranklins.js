@@ -6,7 +6,7 @@
 
 
 const getMessagesFromFranklins = `
-
+SELECT user.friendlyname, Message.message, (datetime((SELECT created FROM Message),'unixepoch')) AS Created FROM Message INNER JOIN user ON user.userid = Message.userid WHERE user.friendlyname LIKE "%Franklin%" AND Message.archive = 0 ORDER BY created DESC;
 `;
 
 module.exports = { getMessagesFromFranklins };
