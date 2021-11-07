@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/style.css">>
 </head>
 
 <body>
@@ -104,6 +104,15 @@
     </form>
     <div id="show added message"></div>
 
+    <!-- D15. Update user login time -->
+    <h2>D15 Update user login time</h2>
+    <form id="user-login-time-form">
+        <label for="userids">User id:</label>
+        <input type="text" id="userids" name="userid"><br>
+        <input type="submit" value="Update login time">
+    </form>
+    <div id="show updated user-login-time"></div>
+
     <script>
         const buttongetAllMessages = document.querySelector('.getting-messages-form');
         buttongetAllMessages.addEventListener('submit', event => {
@@ -121,9 +130,13 @@
                     res.forEach(item => {
                         const li = document.createElement('li');
                         const {
-                            message
+                            friendlyname,
+                            message,
+                            Created,
+                            archive
                         } = item;
-                        li.appendChild(document.createTextNode(message));
+                        const isArchive = archive ? 'Archived' : "Not Archived";
+                        li.appendChild(document.createTextNode(friendlyname + " , " + message + " , " + Created + " , " + isArchive));
                         ol.appendChild(li);
                     });
                 });
@@ -201,9 +214,11 @@
                         // console.log(message);
                         const li = document.createElement('li');
                         const {
-                            message
+                            friendlyname,
+                            message,
+                            Created
                         } = data;
-                        li.appendChild(document.createTextNode(message));
+                        li.appendChild(document.createTextNode(friendlyname + " , " + message + " , " + Created));
                         ol.appendChild(li);
                     });
                 });
@@ -263,6 +278,25 @@
                 userid
             });
             fetch("/api/post-message", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body,
+                    credentials: 'same-origin'
+                }).then(res => res.json())
+                .then(res => console.log("here is res", res))
+                .catch((err) => console.log("error goes here", err));
+        });
+        // D15
+        const formUserLogin = document.getElementById('user-login-time-form');
+        formUserLogin.addEventListener('submit', event => {
+            const userid = document.getElementById('userids').value;
+            event.preventDefault();
+            let body = JSON.stringify({
+                userid
+            });
+            fetch("/api/user-login", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

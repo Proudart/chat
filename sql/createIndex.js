@@ -4,7 +4,7 @@
 // referencing ‘friendlyname’ called ‘friendlyname_idx’. 
 
 const createIndex = `
-CREATE UNIQUE INDEX IF NOT EXISTS friendlyname_idx ON user(friendlyname);
+CREATE UNIQUE INDEX IF NOT EXISTS friendlyname_idx ON Users(friendlyname);
 `;
 
 module.exports = { createIndex };

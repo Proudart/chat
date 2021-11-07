@@ -5,20 +5,13 @@
 // Repeat the setup for “CURRENT_TIMESTAMP” as outlined in the previous requirement.
 
 const createMessages = `
-PRAGMA foreign_keys = true;
-DROP TABLE IF EXISTS Message;
-.mode column
-.header on
-
-
-CREATE TABLE IF NOT EXISTS Message (
+CREATE TABLE IF NOT EXISTS Messages(
     id INTEGER PRIMARY KEY NOT NULL,
     userid INTEGER,
-    friendlyname VARCHAR(50),
     message TEXT NOT NULL,
-    created INTEGER DEFAULT (datetime(strftime('%', '-'), 'unixepoch')),
+    created INTEGER DEFAULT (strftime('%s','now')),
     archive INTEGER(1) DEFAULT 0,
-    FOREIGN KEY (userid) REFERENCES user(userid) ON DELETE CASCADE
+    FOREIGN KEY (userid) REFERENCES Users(userid) ON DELETE CASCADE
     );
 
 `
