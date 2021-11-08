@@ -48,6 +48,11 @@ app.post('/api/user-login', function(req, res) {
     query.updateAUser(db, req, res);
 });
 
+app.delete('/api/message-delete', function(req, res) {
+    console.log("This is the req to delete", req.body);
+    query.deleteAMessage(db, req, res);
+});
+
 app.listen(3000, function() {
     dba.init(db);
     console.log('Server is listening on port 3000. Ready to accept requests!');

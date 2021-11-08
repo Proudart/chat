@@ -8,7 +8,7 @@ let { postMessage } = require('./sql/postMessage');
 
 // Task D13
 function getAllMessages(db, req, res) {
-    db.all(`SELECT Users.friendlyname, Messages.message, (datetime((SELECT created FROM Messages),'unixepoch')) AS Created, Messages.archive FROM Users INNER JOIN Messages ON Users.userid = Messages.userid`, (err, rows) => {
+    db.all(`SELECT Messages.id, Users.friendlyname, Messages.message, (datetime((SELECT created FROM Messages),'unixepoch')) AS Created, Messages.archive FROM Users INNER JOIN Messages ON Users.userid = Messages.userid`, (err, rows) => {
         if (err) {
             console.error(err.message);
         }
@@ -114,29 +114,17 @@ function updateAUser(db, req, res) {
 }
 
 // remove specific messages from user
-function updateAUser(db, req, res) {
-    const { userid } = req.body;
-    db.run(`UPDATE Users SET lastlogin = strftime('%s', "now") WHERE userid = (?)`, [userid],
+function deleteAMessage(db, req, res) {
+    const { userid, messageid } = req.body;
+    db.run(`DELETE FROM Messages WHERE userid = (?) AND id = (?);`, [userid, messageid],
         function(err) {
             if (err) {
                 return console.log(err.message)
             }
-            const messg = `${userid} last login time updated`;
+            const messg = `${userid} message was deleted: ${messageid}`;
             res.send({ "ok": messg }).status(200);
         })
 }
 
-//expand database schema
-function updateAUser(db, req, res) {
-    const { userid } = req.body;
-    db.run(`UPDATE Users SET lastlogin = strftime('%s', "now") WHERE userid = (?)`, [userid],
-        function(err) {
-            if (err) {
-                return console.log(err.message)
-            }
-            const messg = `${userid} last login time updated`;
-            res.send({ "ok": messg }).status(200);
-        })
-}
 
-module.exports = { getAllMessages, organiseUsers, createUser, getFromFranklins, updateSteveJobs, deleteOldMess, archiveJobs, postAMessage, updateAUser }
+module.exports = { getAllMessages, organiseUsers, createUser, getFromFranklins, updateSteveJobs, deleteOldMess, archiveJobs, postAMessage, updateAUser, deleteAMessage }
